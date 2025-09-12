@@ -91,7 +91,7 @@ backend/
     npm start     # for production
 
 ## 📡 API Endpoints
-## 🔑 Authentication
+## 🔑 Authentication user & Goals
     ```base
     | Method | Endpoint            | Description               | Auth Required |
     |--------|---------------------|---------------------------|---------------|
@@ -108,37 +108,37 @@ backend/
 
 # 🛡️ Middleware
 
-Auth Middleware → Protects routes with JWT
+- Auth Middleware → Protects routes with JWT
 
-Validation Middleware → Validates incoming requests
+- Validation Middleware → Validates incoming requests
 
-Error Handler → Centralized error response system
+- Error Handler → Centralized error response system
 
 **🛠️ Tech Stack**
 
-Node.js – Server runtime
+- Node.js – Server runtime
 
-Express.js – Web framework
+- Express.js – Web framework
 
-MongoDB & Mongoose – Database and ODM
+- MongoDB & Mongoose – Database and ODM
 
-JWT – Authentication
+- JWT – Authentication
 
-Nodemon – Dev tool
+- Nodemon – Dev tool
 
 🚧 **Future Work**
 
-Add frontend (React.js) for UI
+- Add frontend (React.js) for UI
 
-Role-based authentication (Admin/User)
+- Role-based authentication (Admin/User)
 
-Advanced goal tracking features (deadlines, categories)
+- Advanced goal tracking features (deadlines, categories)
 
-Unit & integration testing
+- Unit & integration testing
 
 📜 License
 
-This project is licensed under the MIT License.
+- This project is licensed under the MIT License.
 
 
 ---
