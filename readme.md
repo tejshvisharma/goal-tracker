@@ -114,7 +114,7 @@ backend/
 
 - Error Handler → Centralized error response system
 
-**🛠️ Tech Stack**
+#🛠️ Tech Stack
 
 - Node.js – Server runtime
 
@@ -126,7 +126,7 @@ backend/
 
 - Nodemon – Dev tool
 
-🚧 **Future Work**
+#🚧 Future Work
 
 - Add frontend (React.js) for UI
 
@@ -136,7 +136,7 @@ backend/
 
 - Unit & integration testing
 
-📜 License
+#📜 License
 
 - This project is licensed under the MIT License.
 
