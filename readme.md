@@ -27,6 +27,12 @@ The UI is intentionally lightweight and is used to test authentication, role-bas
 - Admin-only page for viewing users
 - Route protection with role-based guard in the frontend
 
+✅ **Dockerized Development Setup**
+
+- Single command startup using Docker Compose
+- MongoDB, backend, and frontend run as separate services
+- Persistent MongoDB data and hot reload-friendly bind mounts
+
 ✅ **Health Monitoring**
 
 - API health check endpoint
@@ -43,6 +49,7 @@ The UI is intentionally lightweight and is used to test authentication, role-bas
 
 ```plaintext
 backend/
+├── Dockerfile
 └── src/
    ├── app.js
    ├── server.js
@@ -55,16 +62,84 @@ backend/
    └── db/
 
 frontend/
+├── Dockerfile
 └── src/
    ├── App.jsx
    ├── api/
    ├── components/
    └── pages/
+
+docker-compose.yml
 ```
 
      ---
 
 ## ⚙️ Installation & Setup
+
+### Option A: Docker (Recommended)
+
+1. **Prerequisites**
+   - Docker Desktop (or Docker Engine + Compose plugin)
+
+2. **Configure backend environment for Docker**
+   - Update `backend/.env` (or copy from `backend/.env.example`) with these values:
+
+   ```env
+   PORT=5000
+   MONGO_URI=mongodb://mongodb:27017/goal-tracker
+   JWT_SECRET=change_this_to_a_secure_secret
+   API_BASE_URL=http://localhost:5173
+   NODE_ENV=development
+   MONGO_RETRY_DELAY_MS=5000
+   ```
+
+   - Important: For Docker Compose networking, MongoDB host must be `mongodb` (service name), not `localhost`.
+
+3. **Start all services**
+
+   ```bash
+   docker compose up --build
+   ```
+
+4. **Open applications**
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:5000
+
+5. **Stop services**
+
+   ```bash
+   docker compose down
+   ```
+
+### Docker Service Details
+
+| Service  | Port Mapping  | Notes                                      |
+| -------- | ------------- | ------------------------------------------ |
+| mongodb  | internal only | Uses named volume `mongo_data`             |
+| backend  | 5000:5000     | Depends on `mongodb`, reads `backend/.env` |
+| frontend | 5173:5173     | Depends on `backend`                       |
+
+### Docker Networking Rules
+
+- Backend connects to MongoDB using `mongodb://mongodb:27017/goal-tracker`.
+- Frontend (browser context) calls backend at `http://localhost:5000`.
+- Do not use `localhost` for container-to-container calls.
+
+### Hot Reload + Volumes
+
+- Backend bind mount: `./backend:/app`
+- Frontend bind mount: `./frontend:/app`
+- Anonymous dependencies are protected using named volumes:
+  - `backend_node_modules:/app/node_modules`
+  - `frontend_node_modules:/app/node_modules`
+
+### CORS and Cookies
+
+- Backend CORS allows `http://localhost:5173`.
+- Backend CORS has `credentials: true` enabled.
+- Axios client has `withCredentials: true` enabled.
+
+### Option B: Run Without Docker
 
 1. **Clone the repository**
 
@@ -168,6 +243,8 @@ frontend/
 - React + Vite – Minimal frontend UI
 
 - React Router + Axios – Routing and API calls
+
+- Docker + Docker Compose – Containerized local development
 
 ## 📈 Scalability Notes
 

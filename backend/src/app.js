@@ -1,29 +1,33 @@
 import express from "express";
-
 import cors from "cors";
-
 import dotenv from "dotenv";
-
 dotenv.config();
 
 import cookieParser from "cookie-parser";
 import errorHandler from "./middleware/errorHandler.middleware.js";
 import ApiError from "./utils/apiError.js";
+import logger from "./middleware/logger.middleware.js";
 
 const app = express();
-
-const API_BASE_URL = process.env.API_BASE_URL;
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:5173";
+const allowedOrigins = API_BASE_URL.split(",").map((origin) => origin.trim());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(logger);
 app.use(
   cors({
-    origin: [API_BASE_URL, "http://localhost:5173"],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("CORS origin not allowed"));
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Accept"],
-    exposedHeaders: ["Set-Cookie", "*"],
+    exposedHeaders: ["Set-Cookie"],
   }),
 );
 app.use(cookieParser());
@@ -33,7 +37,6 @@ app.use(express.static("public"));
 import goalRouter from "./routes/goal.routes.js";
 import healthCheckRouter from "./routes/health.routes.js";
 import userRouter from "./routes/user.routes.js";
-import logger from "./middleware/logger.middleware.js";
 
 // routes the related routes :
 app.use("/api/v1/healthcheck", healthCheckRouter);
