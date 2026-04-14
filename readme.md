@@ -78,8 +78,15 @@ docker-compose.yml
 
 ### Option A: Docker (Recommended)
 
-1. **Prerequisites**
+0. **Prerequisites**
    - Docker Desktop (or Docker Engine + Compose plugin)
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repo-url>
+   cd <repo-folder>
+   ```
 
 2. **Configure backend environment for Docker**
    - Update `backend/.env` (or copy from `backend/.env.example`) with these values:
