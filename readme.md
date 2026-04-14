@@ -147,10 +147,6 @@ backend/
 
 # 🚧 Future Work
 
-- Add frontend (React.js) for UI
-
-- Role-based authentication (Admin/User)
-
 - Advanced goal tracking features (deadlines, categories)
 
 - Unit & integration testing
