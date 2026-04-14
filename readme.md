@@ -37,42 +37,40 @@ The API currently supports both browser and mobile clients.
 
 ```plaintext
 backend/
-│── app.js                 # Express app configuration
-│── server.js              # Server entry point
+└── src/
+│   │── app.js                 # Express app configuration
+│   │── server.js              # Server entry point
 │
-├── controllers/           # Route controllers (business logic)
-│   ├── goal.controllers.js
-│   ├── health.controller.js
-│   └── user.controllers.js
+│   ├── controllers/           # Route controllers (business logic)
+│   │   ├── goal.controllers.js
+│   │   ├── health.controller.js
+│   │   └── user.controllers.js
 │
-├── routes/                # API routes
-│   ├── goal.routes.js
-│   ├── health.routes.js
-│   └── user.routes.js
+│   ├── routes/                # API routes
+│   │   ├── goal.routes.js
+│   │   ├── health.routes.js
+│   │   └── user.routes.js
 │
-├── models/                # Mongoose models
-│   ├── goal.model.js
-│   └── user.model.js
+│   ├── models/                # Mongoose models
+│   │   ├── goal.model.js
+│   │   └── user.model.js
 │
-├── middleware/            # Custom middleware
-│   ├── auth.middleware.js
-│   ├── errorHandler.middleware.js
-│   └── validate.middleware.js
+│   ├── middleware/            # Custom middleware
+│   │   ├── auth.middleware.js
+│   │   ├── errorHandler.middleware.js
+│   │   └── validate.middleware.js
 │
-├── validators/            # Route validators
-│   ├── goal.validators.js
-│   └── user.validators.js
+│   ├── validators/            # Route validators
+│   │   ├── goal.validators.js
+│   │   └── user.validators.js
 │
-├── utils/                 # Utility helpers
-│   ├── apiError.js
-│   ├── apiResponse.js
-│   └── asyncHandler.js
+│   ├── utils/                 # Utility helpers
+│   │   ├── apiError.js
+│   │   ├── apiResponse.js
+│   │   └── asyncHandler.js
 │
-├── db/                    # Database connection
-│   └── db.js
-│
-└── public/                # Static files (for frontend later)
-    └── index.html
+│   └── db/                    # Database connection
+│       └── db.js
 
 ```
 
@@ -104,8 +102,8 @@ backend/
 
 4. **Run the server**
    ```bash
-   node backend/server.js
-   npx nodemon backend/server.js
+   node backend/src/server.js
+   npx nodemon backend/src/server.js
    ```
 
 ## 📡 API Endpoints
