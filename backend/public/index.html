@@ -1,12 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>goals App</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Goal Tracker API Docs</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #475569;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .wrap {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+
+        h1,
+        h2 {
+            margin: 0 0 10px;
+            font-weight: 600;
+        }
+
+        p,
+        li {
+            margin: 6px 0;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            padding: 10px 8px;
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--text);
+            font-weight: 600;
+            background: #f1f5f9;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>hey welcome to the goals app.</h1>
-    <p>place where you can arrange and set goals easily</p>
+    <main class="wrap">
+        <section class="card">
+            <h1>Goal Tracker API</h1>
+            <p>Version: v1</p>
+            <p>Base path: /api/v1</p>
+            <p>Auth: accessToken cookie or Authorization Bearer token</p>
+        </section>
+
+        <section class="card">
+            <h2>Routes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Path</th>
+                        <th>Auth</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET</td>
+                        <td>/api/v1/healthcheck</td>
+                        <td>No</td>
+                        <td>Health check</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/api/v1/user/register</td>
+                        <td>No</td>
+                        <td>Creates user and sets accessToken cookie</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/api/v1/user/login</td>
+                        <td>No</td>
+                        <td>Logs in and sets accessToken cookie</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/api/v1/user/logout</td>
+                        <td>Yes</td>
+                        <td>Clears accessToken cookie</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/api/v1/user/me</td>
+                        <td>Yes</td>
+                        <td>Current user profile</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/api/v1/user/all-users</td>
+                        <td>Admin</td>
+                        <td>RBAC protected</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/api/v1/goals</td>
+                        <td>Yes</td>
+                        <td>List user goals</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/api/v1/goals</td>
+                        <td>Yes</td>
+                        <td>Create goal</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/api/v1/goals/:id</td>
+                        <td>Yes</td>
+                        <td>Update goal title</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/api/v1/goals/:id</td>
+                        <td>Yes</td>
+                        <td>Delete goal</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card">
+            <h2>Response Shape</h2>
+            <p>Success: success, statusCode, message, data</p>
+            <p>Error: statusCode, message, errors, success</p>
+            <p>Validation errors return 422 with field-level errors.</p>
+        </section>
+    </main>
 </body>
+
 </html>
