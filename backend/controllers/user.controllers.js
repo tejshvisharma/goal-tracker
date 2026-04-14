@@ -14,10 +14,20 @@ function generateToken(userId) {
   return token;
 }
 
+function getCookieOptions() {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    maxAge: 24 * 60 * 60 * 1000,
+  };
+}
+
 export const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
 
-  // Validation check (optional but recommended)
   if (!username || !email || !password) {
     throw new ApiError(400, "All fields are required");
   }
@@ -38,19 +48,23 @@ export const registerUser = asyncHandler(async (req, res) => {
   }
 
   const accessToken = generateToken(user._id);
+  const cookieOptions = getCookieOptions();
 
-  return res.status(201).json(
-    new ApiResponse(
-      201,
-      {
-        _id: createdUser._id,
-        username: createdUser.username,
-        email: createdUser.email,
-        accessToken: accessToken,
-      },
-      "User registered successfully"
-    )
-  );
+  return res
+    .status(201)
+    .cookie("accessToken", accessToken, cookieOptions)
+    .json(
+      new ApiResponse(
+        201,
+        {
+          _id: createdUser._id,
+          username: createdUser.username,
+          email: createdUser.email,
+          accessToken: accessToken,
+        },
+        "User registered successfully",
+      ),
+    );
 });
 
 export const loginUser = asyncHandler(async (req, res) => {
@@ -74,37 +88,43 @@ export const loginUser = asyncHandler(async (req, res) => {
 
   const loggedInUser = await User.findById(user._id).select("-password");
 
-
   const accessToken = generateToken(user._id);
+  const cookieOptions = getCookieOptions();
 
-  return res.status(200).json(
-    new ApiResponse(
-      200,
-      {
-        _id: loggedInUser._id,
-        username: loggedInUser.username,
-        email: loggedInUser.email,
-        accessToken: accessToken,
-      },
-      "User logged in successfully"
-    )
-  );
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, cookieOptions)
+    .json(
+      new ApiResponse(
+        200,
+        {
+          _id: loggedInUser._id,
+          username: loggedInUser.username,
+          email: loggedInUser.email,
+          accessToken: accessToken,
+        },
+        "User logged in successfully",
+      ),
+    );
 });
 
 export const getMe = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user?._id).select("-password");
 
-  if(!user){
+  if (!user) {
     throw new ApiError(401, "No user data found!");
   }
- 
+
   return res
     .status(200)
-    .json(new ApiResponse(
-      200, 
-      user, 
-      "getting user information"
-    ));
+    .json(new ApiResponse(200, user, "getting user information"));
+});
+
+export const logoutUser = asyncHandler(async (req, res) => {
+  return res
+    .status(200)
+    .clearCookie("accessToken")
+    .json(new ApiResponse(200, {}, "User logged out successfully"));
 });
 
 export const getAllUsers = asyncHandler(async (req, res) => {
