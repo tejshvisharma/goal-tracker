@@ -1,8 +1,7 @@
-# 🎯 Goal Tracker Backend
+# 🎯 Goal Tracker (Backend + Minimal UI)
 
-This is the **backend service** for the Goal Tracker project, built with **Node.js, Express, and MongoDB**.  
-It provides APIs for **user authentication, goal management, and health monitoring**.  
-The API currently supports both browser and mobile clients.
+This project includes a **Node.js + Express + MongoDB backend** and a **minimal React UI** to demonstrate backend functionality end to end.  
+The UI is intentionally lightweight and is used to test authentication, role-based access, and goal CRUD flows from a browser.
 
 ---
 
@@ -21,6 +20,13 @@ The API currently supports both browser and mobile clients.
 - Link goals to authenticated users
 - Validate incoming requests
 
+✅ **Minimal UI Demo (React + Vite)**
+
+- Register and login pages
+- Dashboard to create, edit, delete, and view goals
+- Admin-only page for viewing users
+- Route protection with role-based guard in the frontend
+
 ✅ **Health Monitoring**
 
 - API health check endpoint
@@ -38,40 +44,22 @@ The API currently supports both browser and mobile clients.
 ```plaintext
 backend/
 └── src/
-│   │── app.js                 # Express app configuration
-│   │── server.js              # Server entry point
-│
-│   ├── controllers/           # Route controllers (business logic)
-│   │   ├── goal.controllers.js
-│   │   ├── health.controller.js
-│   │   └── user.controllers.js
-│
-│   ├── routes/                # API routes
-│   │   ├── goal.routes.js
-│   │   ├── health.routes.js
-│   │   └── user.routes.js
-│
-│   ├── models/                # Mongoose models
-│   │   ├── goal.model.js
-│   │   └── user.model.js
-│
-│   ├── middleware/            # Custom middleware
-│   │   ├── auth.middleware.js
-│   │   ├── errorHandler.middleware.js
-│   │   └── validate.middleware.js
-│
-│   ├── validators/            # Route validators
-│   │   ├── goal.validators.js
-│   │   └── user.validators.js
-│
-│   ├── utils/                 # Utility helpers
-│   │   ├── apiError.js
-│   │   ├── apiResponse.js
-│   │   └── asyncHandler.js
-│
-│   └── db/                    # Database connection
-│       └── db.js
+   ├── app.js
+   ├── server.js
+   ├── controllers/
+   ├── routes/
+   ├── models/
+   ├── middleware/
+   ├── validators/
+   ├── utils/
+   └── db/
 
+frontend/
+└── src/
+   ├── App.jsx
+   ├── api/
+   ├── components/
+   └── pages/
 ```
 
      ---
@@ -88,23 +76,47 @@ backend/
 2. **Install dependencies**
 
    ```bash
+   cd backend
    npm install
+
+   cd ../frontend
+   npm install
+
+   cd ..
    ```
 
-3. **Setup environment variables**
-   Create a .env file in the root directory with the following variables:
+3. **Setup environment variables (backend)**
+   Create a `.env` file inside `backend/` with the following variables:
 
+   ```env
    PORT=5000
    MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_secret_key
    API_BASE_URL=http://localhost:5173
    NODE_ENV=development
-
-4. **Run the server**
-   ```bash
-   node backend/src/server.js
-   npx nodemon backend/src/server.js
    ```
+
+4. **Run backend and frontend**
+
+   In terminal 1:
+
+   ```bash
+   cd backend
+   npm run start
+   ```
+
+   In terminal 2:
+
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+
+5. **Open the app**
+
+   Visit `http://localhost:5173`
+
+   Frontend API base URL currently points to `http://localhost:5000/api/v1`.
 
 ## 📡 API Endpoints
 
@@ -121,6 +133,16 @@ backend/
 | PUT    | /api/v1/goals/:id      | Update goal          | Yes (cookie/header) |
 | DELETE | /api/v1/goals/:id      | Delete goal          | Yes (cookie/header) |
 | GET    | /api/v1/healthcheck    | API health check     | No                  |
+
+## 🖥️ Frontend Routes (Minimal UI)
+
+| Route      | Description                           |
+| ---------- | ------------------------------------- |
+| /login     | Login page                            |
+| /register  | User registration page                |
+| /dashboard | Protected goal dashboard (CRUD goals) |
+| /admin     | Admin-only users listing page         |
+| /forbidden | Access denied page                    |
 
 # 🛡️ Middleware
 
@@ -143,18 +165,33 @@ backend/
 
 - Nodemon – Dev tool
 
-# 🚧 Future Work
+- React + Vite – Minimal frontend UI
 
-- Advanced goal tracking features (deadlines, categories)
+- React Router + Axios – Routing and API calls
+
+## 📈 Scalability Notes
+
+Current state:
+
+- Backend API is separated from frontend and can be scaled independently.
+- JWT-based auth keeps the API mostly stateless, which is friendly for horizontal scaling.
+- MongoDB stores users/goals centrally, so multiple API instances can share the same data.
+
+Recommended next steps for higher traffic:
+
+- Add DB indexes for frequent filters/lookups (for example, userId and createdAt on goals).
+- Add pagination on list endpoints to avoid large payloads.
+- Add rate limiting and stricter security headers at the API layer.
+- Introduce caching for frequently requested read operations.
+- Add observability (structured logs, metrics, tracing) and health probes.
+- Use a reverse proxy/load balancer and run multiple backend instances.
+
+# 🚧 Future Work
 
 - Unit & integration testing
 
-# 📜 License
-
-- This project is licensed under the MIT License.
-
 ## 📘 API Docs
 
-- Frontend API contract is documented in API_REFERENCE.md
+- API contract is documented in backend/API_REFERENCE.md
 
 ---
