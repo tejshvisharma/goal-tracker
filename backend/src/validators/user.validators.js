@@ -1,7 +1,17 @@
 import { body } from "express-validator";
 
 export const registerUserValidation = [
-  body("username").trim().notEmpty().withMessage("Username is required"),
+  body("username").optional().trim(),
+  body("name").optional().trim(),
+  body().custom((_, { req }) => {
+    const username = req.body?.username ?? req.body?.name;
+
+    if (!username || String(username).trim() === "") {
+      throw new Error("Username is required");
+    }
+
+    return true;
+  }),
   body("email").trim().isEmail().withMessage("Valid email is required"),
   body("password")
     .trim()

@@ -26,7 +26,9 @@ function getCookieOptions() {
 }
 
 export const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, password } = req.body;
+  const requestBody = req.body ?? {};
+  const username = requestBody.username ?? requestBody.name;
+  const { email, password } = requestBody;
 
   if (!username || !email || !password) {
     throw new ApiError(400, "All fields are required");
@@ -68,7 +70,8 @@ export const registerUser = asyncHandler(async (req, res) => {
 });
 
 export const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const requestBody = req.body ?? {};
+  const { email, password } = requestBody;
 
   if (!email || !password) {
     throw new ApiError(400, "Email and password are required");
