@@ -72,7 +72,7 @@ frontend/
 docker-compose.yml
 ```
 
-     ---
+---
 
 ## ⚙️ Installation & Setup
 
@@ -195,7 +195,7 @@ docker-compose.yml
 
 ## 📡 API Endpoints
 
-## 🔑 Authentication user & Goals
+### 🔑 Authentication & Goals
 
 | Method | Endpoint               | Description          | Auth Required       |
 | ------ | ---------------------- | -------------------- | ------------------- |
@@ -209,6 +209,32 @@ docker-compose.yml
 | DELETE | /api/v1/goals/:id      | Delete goal          | Yes (cookie/header) |
 | GET    | /api/v1/healthcheck    | API health check     | No                  |
 
+## 📘 API Documentation & Testing
+
+- Versioned API base: `/api/v1`
+- Detailed endpoint contract: `backend/API_REFERENCE.md`
+- Postman collection: `backend/Goal Tracker  Api.postman_collection`
+
+To test quickly in Postman:
+
+1. Import the collection file.
+2. Set base URL to `http://localhost:5000`.
+3. Run register/login first, then authenticated goal routes.
+
+## ✅ Common HTTP Status Codes
+
+| Status Code | Meaning in this project                     |
+| ----------- | ------------------------------------------- |
+| 200         | Success (fetch/update/delete, login/logout) |
+| 201         | Resource created (register, create goal)    |
+| 400         | Bad request (missing/invalid input)         |
+| 401         | Unauthorized (invalid credentials/token)    |
+| 403         | Forbidden (role-based access denied)        |
+| 404         | Resource/route not found                    |
+| 409         | Conflict (duplicate user data)              |
+| 422         | Validation failed (express-validator)       |
+| 500         | Internal server error                       |
+
 ## 🖥️ Frontend Routes (Minimal UI)
 
 | Route      | Description                           |
@@ -219,31 +245,31 @@ docker-compose.yml
 | /admin     | Admin-only users listing page         |
 | /forbidden | Access denied page                    |
 
-# 🛡️ Middleware
+## 🛡️ Middleware
 
 - Auth Middleware → Protects routes with JWT
 - Supports accessToken from cookie and Authorization Bearer header
-
 - Validation Middleware → Validates incoming requests
-
 - Error Handler → Centralized error response system
 
-# 🛠️ Tech Stack
+## 🔐 Security Notes
+
+- Passwords are hashed with `bcryptjs` before storing in MongoDB.
+- JWT access token is issued with `24h` expiry.
+- Auth supports HttpOnly cookie plus Authorization Bearer token.
+- CORS is configured to allow `http://localhost:5173` with `credentials: true`.
+- Request validation is enabled using `express-validator` on auth and goal routes.
+- Refresh token rotation is not implemented yet (access-token based auth only).
+
+## 🛠️ Tech Stack
 
 - Node.js – Server runtime
-
 - Express.js – Web framework
-
 - MongoDB & Mongoose – Database and ODM
-
 - JWT – Authentication
-
 - Nodemon – Dev tool
-
 - React + Vite – Minimal frontend UI
-
 - React Router + Axios – Routing and API calls
-
 - Docker + Docker Compose – Containerized local development
 
 ## 📈 Scalability Notes
@@ -263,12 +289,8 @@ Recommended next steps for higher traffic:
 - Add observability (structured logs, metrics, tracing) and health probes.
 - Use a reverse proxy/load balancer and run multiple backend instances.
 
-# 🚧 Future Work
+## 🚧 Future Work
 
 - Unit & integration testing
-
-## 📘 API Docs
-
-- API contract is documented in backend/API_REFERENCE.md
 
 ---
